@@ -91,7 +91,8 @@ const startCrawler = async (
           const page = await browser.newPage();
           await page.setUserAgent(userAgent);
 
-          while ((url = getNextFullUrl())) {
+          let url = getNextFullUrl();
+          while (url) {
             console.log('Crawling: [Start] ', url);
             await crawlingOnePage(
               page,
@@ -110,6 +111,8 @@ const startCrawler = async (
 
                 throw e;
               });
+
+            url = getNextFullUrl();
           }
           rs();
         });
