@@ -24,7 +24,7 @@
     "skeleton"
   ],
   "dependencies": {
-    "puppeteer": "^13.5.0"
+    "puppeteer": "^15.0.0"
   },
   "devDependencies": {
     "prettier": "^2.5.1"
