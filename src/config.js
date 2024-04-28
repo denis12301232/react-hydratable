@@ -51,8 +51,8 @@ try {
     if (typeof params.pageCount !== 'number' || params.pageCount <= 0) {
       throw 'pageCount must be number and bigger than 0';
     }
-    if (typeof params.retryCount !== 'number' || params.retryCount <= 0) {
-      throw 'retryCount must be number and bigger than 0';
+    if (typeof params.retryCount !== 'number' || params.retryCount < 0) {
+      throw 'retryCount must be number and equal or bigger than 0';
     }
   }
 } catch (e) {
