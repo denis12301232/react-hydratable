@@ -27,6 +27,7 @@ Now every search bot(that cannot execute javascript, just read html file) can co
    Go to your project root and open `src/index.js`
 
    ```javascript
+   //react 16, 17
    import React from 'react';
    import { hydrate, render } from 'react-dom';
 
@@ -40,10 +41,23 @@ Now every search bot(that cannot execute javascript, just read html file) can co
      render(element, rootElement);
    }
    ```
+   ```javascript
+   //react 18
+    import React from "react";
+    import { createRoot, hydrateRoot } from "react-dom/client";
+
+
+    if (rootElement.hasChildNodes()){
+      hydrateRoot(rootElement, element);
+    } else {
+      const root = createRoot(rootElement);
+      root.render(element, rootElement);
+    }
+   ```
 
 If user access crawled page, `???/html` has been filled body. So browser need not break all DOM and re-render all elements.
 
-Browser can use already-made-DOM objects. `hydrate()` function support this.
+Browser can use already-made-DOM objects. `hydrate()/hydrateRoot()` function support this.
 
 That's all! `react-hydratable` is ready!!
 
