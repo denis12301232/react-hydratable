@@ -10,7 +10,6 @@ const crawlingOnePage = async (
   delayTime,
   htmlPrefix
 ) => {
-  console.log('Crawling: [Start] ', url);
   await page.goto(url, { timeout: 10 * 1000 });
 
   await delay(delayTime);
@@ -23,9 +22,9 @@ const crawlingOnePage = async (
     }
     return document.documentElement.innerHTML;
   });
+
   if (htmlString.error) {
-    console.error(`Crawling: [Error] ${url} ${htmlString.error}`);
-    return;
+    throw new Error(`${url} ${htmlString.error}`);
   }
 
   let path = url.replace(host, '');
@@ -47,15 +46,15 @@ const crawlingOnePage = async (
 
   createDirs(outputDir);
 
-  fs.writeFile(outputPath, htmlPrefix + htmlString, (e) => {
-    if (e) {
-      console.error(
-        'Crawling: [Error] Cannot write crawler output file to webroot path\n',
-        e
-      );
-    } else {
-      console.log(`Crawling: [Finished] ${url}`);
-    }
+  await new Promise((rs) => {
+    fs.writeFile(outputPath, htmlPrefix + htmlString, (e) => {
+      if (e) {
+        console.error(e);
+        throw new Error('Cannot write crawler output file to webroot path');
+      } else {
+        rs();
+      }
+    });
   });
 };
 
@@ -93,6 +92,7 @@ const startCrawler = async (
           await page.setUserAgent(userAgent);
 
           while ((url = getNextFullUrl())) {
+            console.log('Crawling: [Start] ', url);
             await crawlingOnePage(
               page,
               url,
@@ -100,7 +100,16 @@ const startCrawler = async (
               outputRoot,
               delayTime,
               htmlPrefix
-            );
+            )
+              .then(() => {
+                console.log('Crawling: [Finished] ', url);
+              })
+              .catch((e) => {
+                console.error('Crawling: [Error] ', url);
+                console.error(e);
+
+                throw e;
+              });
           }
           rs();
         });
