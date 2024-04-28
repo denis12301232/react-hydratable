@@ -198,7 +198,8 @@ Recommend set between 1~4.
   "delay": 1500,
   "userAgent": "react-hydratable",
   "htmlPrefix": "<!DOCTYPE html>",
-  "pageCount": 1
+  "pageCount": 1,
+  "retryCount": 1,
 }
 ```
 
@@ -217,3 +218,5 @@ Recommend set between 1~4.
 `htmlPrefix`: prefix string that is added crawling result (if blank, `<!DOCTYPE html>` is not included)
 
 `pageCount`: multi-page crawling is support. if you increase this value, crawling speed is up, but may stress to server.
+
+`retryCount`: if crawling is fail, do retry as retryCount times automatically.
