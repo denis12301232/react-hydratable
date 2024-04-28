@@ -65,7 +65,8 @@ const startCrawler = async (
   delayTime,
   userAgent,
   htmlPrefix,
-  pageCount
+  pageCount,
+  retryCount
 ) => {
   console.log('Crawling: start');
 
@@ -94,23 +95,32 @@ const startCrawler = async (
           let url = getNextFullUrl();
           while (url) {
             console.log('Crawling: [Start] ', url);
-            await crawlingOnePage(
-              page,
-              url,
-              host,
-              outputRoot,
-              delayTime,
-              htmlPrefix
-            )
-              .then(() => {
-                console.log('Crawling: [Finished] ', url);
-              })
-              .catch((e) => {
+
+            let tryCount = 0;
+            while (tryCount <= retryCount) {
+              tryCount++;
+              try {
+                await crawlingOnePage(
+                  page,
+                  url,
+                  host,
+                  outputRoot,
+                  delayTime,
+                  htmlPrefix
+                );
+              } catch (e) {
                 console.error('Crawling: [Error] ', url);
                 console.error(e);
 
-                throw e;
-              });
+                if (tryCount > retryCount) {
+                  throw e;
+                } else {
+                  console.log('Crawling: [Retry] ', url);
+                }
+              }
+            }
+
+            console.log('Crawling: [Finished] ', url);
 
             url = getNextFullUrl();
           }

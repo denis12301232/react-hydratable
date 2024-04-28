@@ -22,7 +22,8 @@ const closeHttpServer = createHttpServer(config.webroot, config.port, () =>
     config.delay,
     config.userAgent,
     config.htmlPrefix,
-    config.pageCount
+    config.pageCount,
+    config.retryCount
   )
     .catch((e) => {
       console.error('Crawling: [error]\n', e);
