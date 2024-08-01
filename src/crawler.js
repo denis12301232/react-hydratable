@@ -66,13 +66,12 @@ const startCrawler = async (
   userAgent,
   htmlPrefix,
   pageCount,
-  retryCount
+  retryCount,
+  puppeterOpts
 ) => {
   console.log('Crawling: start');
 
-  const browser = await puppeteer.launch({
-    args: ['--disable-web-security'],
-  });
+  const browser = await puppeteer.launch(puppeterOpts);
 
   const pathnames = urls.slice();
   const getNextFullUrl = () => {

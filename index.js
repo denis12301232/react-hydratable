@@ -23,7 +23,8 @@ const closeHttpServer = createHttpServer(config.webroot, config.port, () =>
     config.userAgent,
     config.htmlPrefix,
     config.pageCount,
-    config.retryCount
+    config.retryCount,
+    config.puppeterOpts
   )
     .catch((e) => {
       console.error('Crawling: [error]\n', e);
