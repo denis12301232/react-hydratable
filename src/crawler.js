@@ -1,6 +1,7 @@
 const fs = require('fs');
 const puppeteer = require('puppeteer');
 const { delay, iife, createDirs } = require('./utils');
+const { URL } = require('url');
 
 const crawlingOnePage = async (
   page,
@@ -21,7 +22,7 @@ const crawlingOnePage = async (
         error: 'page is not text/html type',
       };
     }
-    return document.documentElement.innerHTML.replace(url, domain);
+    return document.documentElement.innerHTML;
   });
 
   if (htmlString.error) {
@@ -44,11 +45,11 @@ const crawlingOnePage = async (
 
     return dirs.join('/');
   });
-
+  
   createDirs(outputDir);
-
+  
   await new Promise((rs) => {
-    fs.writeFile(outputPath, htmlPrefix + htmlString, (e) => {
+    fs.writeFile(outputPath, htmlPrefix + htmlString.replace(new URL(url).hostname, domain), (e) => {
       if (e) {
         console.error(e);
         throw new Error('Cannot write crawler output file to webroot path');
