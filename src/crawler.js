@@ -47,9 +47,9 @@ const crawlingOnePage = async (
   });
   
   createDirs(outputDir);
-  
+
   await new Promise((rs) => {
-    fs.writeFile(outputPath, htmlPrefix + htmlString.replace(new URL(url).hostname, domain), (e) => {
+    fs.writeFile(outputPath, htmlPrefix + htmlString.replace(new URL(url).host, domain), (e) => {
       if (e) {
         console.error(e);
         throw new Error('Cannot write crawler output file to webroot path');
