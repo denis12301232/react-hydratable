@@ -24,6 +24,7 @@ const closeHttpServer = createHttpServer(config.webroot, config.port, () =>
     config.htmlPrefix,
     config.pageCount,
     config.retryCount,
+    config.domain,
     config.puppeterOpts
   )
     .catch((e) => {

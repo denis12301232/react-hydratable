@@ -13,6 +13,8 @@ const params = {
   htmlPrefix: '<!DOCTYPE html>',
   pageCount: 1,
   retryCount: 1,
+
+  domain:'http://localhost',
   puppeterOpts: {
     executablePath: '/usr/bin/google-chrome',
     args: ['--disable-web-security'],

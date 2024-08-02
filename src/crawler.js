@@ -8,7 +8,8 @@ const crawlingOnePage = async (
   host,
   outputRoot,
   delayTime,
-  htmlPrefix
+  htmlPrefix,
+  domain
 ) => {
   await page.goto(url, { timeout: 10 * 1000 });
 
@@ -20,7 +21,7 @@ const crawlingOnePage = async (
         error: 'page is not text/html type',
       };
     }
-    return document.documentElement.innerHTML;
+    return document.documentElement.innerHTML.replace(url, domain);
   });
 
   if (htmlString.error) {
@@ -67,6 +68,7 @@ const startCrawler = async (
   htmlPrefix,
   pageCount,
   retryCount,
+  domain,
   puppeterOpts
 ) => {
   console.log('Crawling: start');
@@ -105,7 +107,8 @@ const startCrawler = async (
                   host,
                   outputRoot,
                   delayTime,
-                  htmlPrefix
+                  htmlPrefix,
+                  domain
                 );
               } catch (e) {
                 console.error('Crawling: [Error] ', url);
